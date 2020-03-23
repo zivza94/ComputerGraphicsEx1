@@ -1,3 +1,6 @@
+import LinearMath.Matrix;
+import LinearMath.Vector;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -53,6 +56,27 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener {
     public void mouseExited(MouseEvent e) {
         // TODO Auto-generated method stub
 
+    }
+
+    private double[][] UpdateVertex(double[][] vertex, Matrix VM){
+        int dim = vertex.length;
+        int size = vertex[0].length;
+        double[][] retval = new double[dim][size];
+        for(int i=0;i<size;i++){
+            double[] point = new double[dim];
+            for(int j=0; j<dim; j++){
+                point[j] = vertex[j][i];
+            }
+            Vector pointVec = new Vector(point,dim);
+            pointVec =pointVec.AddDimension();
+            pointVec = VM.Multiply(pointVec);
+            pointVec.DecreaseDimension();
+            point = pointVec.getVec();
+            for(int j=0; j<dim; j++){
+                retval[j][i] = point[j];
+            }
+        }
+        return retval;
     }
 
 }

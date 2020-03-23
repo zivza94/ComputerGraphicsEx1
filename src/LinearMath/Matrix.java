@@ -45,7 +45,7 @@ public class Matrix {
         for( int i = 0; i<size; i++){
             double sum = 0;
             for(int j=0;j<size;j++){
-                sum+= v.vec[i]*this.mat[i][j];
+                sum+= v.vec[j]*this.mat[i][j];
             }
             ans2Arr[i] = sum;
         }

@@ -5,5 +5,6 @@ public class ComputerGraphicsEx1 {
       //  MyFrame myFrame = new MyFrame("ComputerGraphicsEx0");
         //myFrame.createWindow();
         View view = new View();
+
     }
 }

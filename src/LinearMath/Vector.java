@@ -7,6 +7,15 @@ public class Vector {
         this.vec = vec;
         this.size = size;
     }
+
+    public int getSize() {
+        return size;
+    }
+
+    public double[] getVec() {
+        return vec;
+    }
+
     public Vector Add(Vector v){
         Vector retval;
         double[] vecArr = new double[size];
@@ -39,5 +48,23 @@ public class Vector {
             System.out.print(this.vec[i] +", ");
         }
         System.out.println();
+    }
+
+    public Vector AddDimension(){
+        double[] vecArr = new double[size+1];
+        for(int i=0; i<size; i++){
+            vecArr[i] = this.vec[i];
+        }
+        vecArr[size] = 1;
+        Vector newVec = new Vector(vecArr,size+1);
+        return newVec;
+    }
+    public Vector DecreaseDimension(){
+        double[] vecArr = new double[size-1];
+        for(int i=0; i<size - 1; i++){
+            vecArr[i] = this.vec[i];
+        }
+        Vector newVec = new Vector(vecArr,size-1);
+        return newVec;
     }
 }
