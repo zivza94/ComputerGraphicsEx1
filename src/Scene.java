@@ -5,7 +5,7 @@ import sun.security.provider.certpath.Vertex;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
+
 
 public class Scene {
     private List<Vector> vertexList;

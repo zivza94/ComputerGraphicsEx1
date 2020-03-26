@@ -14,26 +14,40 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     private Scene scene;
     private View view;
     private Transformation2D transformation;
-    Matrix VM;
-    Matrix AT;
-    Matrix CT;
+    private String transType;
+    private Vector pressedPoint;
+    private Matrix VM;
+    private Matrix AT;
+    private Matrix CT;
+    private Matrix TT;
+    private boolean firstPaint;
     public MyCanvas(int width, int height) throws Exception{
         this.scene = new Scene();
         this.view = new View();
         this.transformation = new Transformation2D();
         this.viewHeight = height;
         this.viewWidth = width;
+        this.AT = new Matrix(3);
+        AT.toIdentityMatrix();
+        this.TT = new Matrix(3);
+        firstPaint = true;
+        TT.toIdentityMatrix();
         addMouseListener(this);
         addMouseMotionListener(this);
         addKeyListener(this);
         cllipingFlag = false;
+
     }
 
     public void paint(Graphics g) {
         setSize(this.viewWidth, this.viewHeight);
-        this.worldView();
-        this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.VM));
-
+        worldView();
+        if(firstPaint) {
+            this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.VM));
+            firstPaint = false;
+        } else {
+            this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.TT));
+        }
 
     }
 
@@ -44,8 +58,8 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         Matrix t2 = transformation.translate((double) this.viewWidth / 2 + 20,
                 (double) this.viewHeight / 2 + 20);
         this.VM = t2.Multiply(scale).Multiply(rotate).Multiply(t1);
-
     }
+
     public void draw(List<Edge> edges, List<Vector> vertex) {
         int edgesNum = edges.size();
         int i;
@@ -61,70 +75,86 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
 
     }
 
-    private List<Vector> UpdateVertex(List<Vector> vertex, Matrix VM){
+    private List<Vector> UpdateVertex(List<Vector> vertex, Matrix TT){
         List<Vector> updatedVertex = new ArrayList<>();
         int i;
         int vertexNum = vertex.size();
         for (i = 0; i < vertexNum; i++) {
-            updatedVertex.add(VM.Multiply(vertex.get(i)));
+            updatedVertex.add(TT.Multiply(vertex.get(i)));
         }
         return updatedVertex;
     }
 
-    public String transformationType(int x, int y) {
+    public void transformationType(int x, int y) {
         int width = this.getWidth();
         int height = this.getHeight();
         Boolean yPosition = (y <= height /3 || y >= (2 * height) / 3);
         if (x < width /3) {
             if (yPosition) {
-                return "Rotate";
+                this.transType = "Rotate";
             } else {
-                return "Scale";
+                this.transType = "Scale";
             }
 
         } else if (x > (2 * width) / 3) {
             if (yPosition) {
-                return "Rotate";
+                this.transType = "Rotate";
             } else {
-                return "Scale";
+                this.transType = "Scale";
             }
         } else {
             if (yPosition) {
-                return "Scale";
+                this.transType = "Scale";
             } else {
-                return "Translate";
+                this.transType = "Translate";
             }
 
         }
 
     }
+
     public void mouseClicked(MouseEvent e) {
         // TODO Auto-generated method stub
 
     }
 
     public void mousePressed(MouseEvent e) {
-        String transformationType = this.transformationType(e.getX(),e.getY());
-        if (transformationType.equals("Rotate")) {
-
-
-        } else if (transformationType.equals(("Scale"))) {
-
-        } else {
-
-        }
-
-
+        this.transformationType(e.getX(),e.getY());
+        this.pressedPoint = new Vector(new double[]{e.getX(),e.getY(), 1}, 3);
     }
 
     public void mouseReleased(MouseEvent e) {
         // TODO Auto-generated method stub
-
+        AT = CT.Multiply(AT);
+        CT.toIdentityMatrix();
         this.repaint();
     }
 
     public void mouseDragged(MouseEvent e) {
-        // TODO Auto-generated method stub
+        if (transType.equals("Translate")) {
+            CT = transformation.translate(e.getX() - pressedPoint.getVec()[0],
+                    e.getY() - pressedPoint.getVec()[1]);
+
+
+        } else {
+            double originX = view.getOrigin().getVec()[0];
+            double originY = view.getOrigin().getVec()[1];
+            Matrix transCenter = transformation.translate(originX, originY);
+            Matrix transBack = transformation.translate(-originX, -originY);
+            Vector destination = new Vector(new double[]{e.getX(),e.getY(), 1}, 3);
+            if (transType.equals(("Scale"))) {
+                double SF = destination.minus(view.getOrigin()).GetLength() /
+                        pressedPoint.minus(view.getOrigin()).GetLength();
+                Matrix scale = transformation.scale(SF, SF);
+                CT = transCenter.Multiply(scale).Multiply(transBack);
+            } else {
+
+                Matrix rotate = transformation.rotate(destination.minus(view.getOrigin()).GetAngle
+                        (pressedPoint.minus(view.getOrigin())));
+                CT = transCenter.Multiply(rotate).Multiply(transBack);
+            }
+        }
+        TT = CT.Multiply(AT).Multiply(VM);
 
         this.repaint();
     }

@@ -3,10 +3,16 @@ package LinearMath;
 public class Matrix {
     double[][] mat;
     int size;
+    public Matrix(int size) {
+        this.mat = new double[size][size];
+        this.size = size;
+    }
+
     public Matrix (double[][] matrix, int matSize){
         mat = matrix;
         size = matSize;
     }
+
     public double[][] getMat(){
         return mat;
     }
@@ -53,5 +59,16 @@ public class Matrix {
         return ans;
     }
 
+    public void toIdentityMatrix() {
+        for( int i = 0; i<size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (i == j) {
+                    mat[i][j] = 1;
+                } else {
+                    mat[i][j] = 0;
+                }
+            }
+        }
+    }
 
 }

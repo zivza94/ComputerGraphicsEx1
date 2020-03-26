@@ -1,4 +1,4 @@
-Origin 400 400
+Origin 200 200
 Direction 30
-Size 350 350
-Resolution 250 250
+Size 400 400
+Resolution 500 500

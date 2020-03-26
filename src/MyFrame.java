@@ -8,9 +8,9 @@ public class MyFrame {
         this.myFrame = new Frame(frameName);
     }
     public void createWindow() throws Exception {
-        Canvas myCanvas = new MyCanvas(800, 800);
+        Canvas myCanvas = new MyCanvas(500, 500);
         myFrame.add(myCanvas);
-        myFrame.setSize(840, 840);
+        myFrame.setSize(540, 540);
 
         WindowAdapter Wa =new WindowAdapter(){
             public void windowClosing (WindowEvent e){
