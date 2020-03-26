@@ -2,11 +2,10 @@ import LinearMath.Matrix;
 import LinearMath.Vector;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 
-class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener {
+class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, KeyListener {
+    private Boolean cllipingFlag;
     private static final long serialVersionUID = 1L;
     Point pStart, pEnd;
     boolean bFlag = false;
@@ -14,6 +13,8 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener {
         setSize(600, 500);
         addMouseListener(this);
         addMouseMotionListener(this);
+        addKeyListener(this);
+        cllipingFlag = false;
     }
 
     public void paint(Graphics g) {
@@ -79,4 +80,20 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener {
         return retval;
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyChar() == 'c' || e.getKeyChar() == 'C') {
+            cllipingFlag = !cllipingFlag;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 }

@@ -11,13 +11,15 @@ public class MyFrame {
         Canvas myCanvas = new MyCanvas();
         myFrame.add(myCanvas);
         myFrame.setSize(600, 500);
-        myFrame.setVisible(true);
+
         WindowAdapter Wa =new WindowAdapter(){
             public void windowClosing (WindowEvent e){
-                myFrame.dispose();
                 System.exit(0);
             }
         };
         myFrame.addWindowListener(Wa);
+        myFrame.pack();
+        myFrame.setVisible(true);
+
     }
 }
