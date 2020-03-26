@@ -7,21 +7,19 @@ public class MyFrame {
     public MyFrame(String frameName) {
         this.myFrame = new Frame(frameName);
     }
-    public void createWindow() {
-        Canvas myCanvas = new MyCanvas();
+    public void createWindow() throws Exception {
+        Canvas myCanvas = new MyCanvas(800, 800);
         myFrame.add(myCanvas);
-        myFrame.setSize(600, 500);
+        myFrame.setSize(840, 840);
 
         WindowAdapter Wa =new WindowAdapter(){
             public void windowClosing (WindowEvent e){
                 System.exit(0);
             }
         };
-        myFrame.setBounds(20,20, 460, 460);
         myFrame.addWindowListener(Wa);
-        myFrame.pack();
+        //myFrame.pack();
         myFrame.setVisible(true);
-        myFrame.setBounds(20,20,560,460);
         myFrame.repaint();
 
     }

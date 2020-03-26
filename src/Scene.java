@@ -60,6 +60,13 @@ public class Scene {
         //createEdgesList(pointsIndex);
     }
 
+    public List<Edge> getEdgesList() {
+        return edgesList;
+    }
+
+    public List<Vector> getVertexList() {
+        return vertexList;
+    }
     /*public void createEdgesList(List<Pair<Integer,Integer>> pointsIndex) {
         ListIterator<Pair<Integer,Integer>> iterator = pointsIndex.listIterator();
         while (iterator.hasNext()) {

@@ -39,4 +39,20 @@ public class View {
             }
         }
     }
+
+    public double getDirection() {
+        return direction;
+    }
+
+    public double[] getSize() {
+        return size;
+    }
+
+    public int[] getResolution() {
+        return resolution;
+    }
+
+    public Vector getOrigin() {
+        return origin;
+    }
 }
