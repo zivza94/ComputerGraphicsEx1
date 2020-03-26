@@ -1,6 +1,7 @@
 import LinearMath.Matrix;
 import LinearMath.Vector;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -9,6 +10,9 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     private static final long serialVersionUID = 1L;
     Point pStart, pEnd;
     boolean bFlag = false;
+    Matrix VM;
+    Matrix AT;
+    Matrix CT;
     public MyCanvas() {
         setSize(600, 500);
         addMouseListener(this);
@@ -19,6 +23,12 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
 
     public void paint(Graphics g) {
         g.drawRect(120, 70, 300, 300 );
+
+    }
+
+    public void draw(Graphics g, List<Edge> edges, List<Edge> edgesList) {
+
+
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -59,25 +69,14 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
 
     }
 
-    private double[][] UpdateVertex(double[][] vertex, Matrix VM){
-        int dim = vertex.length;
-        int size = vertex[0].length;
-        double[][] retval = new double[dim][size];
-        for(int i=0;i<size;i++){
-            double[] point = new double[dim];
-            for(int j=0; j<dim; j++){
-                point[j] = vertex[j][i];
-            }
-            Vector pointVec = new Vector(point,dim);
-            pointVec =pointVec.AddDimension();
-            pointVec = VM.Multiply(pointVec);
-            pointVec.DecreaseDimension();
-            point = pointVec.getVec();
-            for(int j=0; j<dim; j++){
-                retval[j][i] = point[j];
-            }
+    private List<Vector> UpdateVertex(List<Vector> vertex, Matrix VM){
+        List<Vector> updatedVertex = new ArrayList<>();
+        int i;
+        int vertexNum = vertex.size();
+        for (i = 0; i < vertexNum; i++) {
+            updatedVertex.add(VM.Multiply(vertex.get(i)));
         }
-        return retval;
+        return updatedVertex;
     }
 
     @Override

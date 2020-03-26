@@ -17,6 +17,7 @@ public class MyFrame {
                 System.exit(0);
             }
         };
+        myFrame.setBounds(20,20, 460, 460);
         myFrame.addWindowListener(Wa);
         myFrame.pack();
         myFrame.setVisible(true);

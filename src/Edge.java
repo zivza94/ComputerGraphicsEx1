@@ -1,26 +1,23 @@
 public class Edge {
-    private Point start;
-    private Point end;
+    private int pointIndex0;
+    private int pointIndex1;
 
     /**
      * Construct a line given the starting point and the ending point.
-     * @param start the starting point of the line
-     * @param end   the ending point of the line
+     * @param pointIndex0 the index of point 0
+     * @param pointIndex1   the index of point 1
      */
-    public Edge(Point start, Point end) {
-        this.start = new Point(start.getX(), start.getY());
-        this.end = new Point(end.getX(), end.getY());
+    public Edge(int pointIndex0, int pointIndex1) {
+        this.pointIndex0 = pointIndex0;
+        this.pointIndex1 = pointIndex1;
     }
 
-    public Point getStart() {
-        return this.start;
+    public int getpointIndex0() {
+        return this.pointIndex0;
     }
 
-    /**
-     * end method returns the ending point of the line.
-     * @return the ending point.
-     */
-    public Point getEnd() {
-        return this.end;
+
+    public int getpointIndex1() {
+        return this.pointIndex1;
     }
 }
