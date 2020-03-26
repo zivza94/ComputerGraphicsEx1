@@ -34,7 +34,8 @@ public class Vector {
     }
     public double GetLength(){
         double length = 0;
-        length = Math.sqrt(this.Multiply(this));
+        Vector v1 = this.DecreaseDimension();
+        length = Math.sqrt(v1.Multiply(v1));
         return length;
     }
     public double GetAngle(Vector v){
