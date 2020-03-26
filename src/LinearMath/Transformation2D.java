@@ -13,6 +13,7 @@ public class Transformation2D {
     }
     public Matrix rotate(double angle) {
         //radians??
+        //check
         double cos = Math.cos(angle);
         double sin = Math.sin(angle);
         double[][] array = {{cos, sin , 0} , {-sin, cos, 0} , {0, 0 ,1} };
