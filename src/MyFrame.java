@@ -21,6 +21,8 @@ public class MyFrame {
         myFrame.addWindowListener(Wa);
         myFrame.pack();
         myFrame.setVisible(true);
+        myFrame.setBounds(20,20,560,460);
+        myFrame.repaint();
 
     }
 }

@@ -1,9 +1,11 @@
+import LinearMath.Vector;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
 public class View {
-    private Point origin;
+    private Vector origin;
     private double direction;
     private double[] size;
     private int[] resolution;
@@ -20,7 +22,12 @@ public class View {
         while ((line = br.readLine()) != null) {
             String[] str = line.split(" ");
             if (str[0].compareTo("Origin") == 0) {
-                this.origin = new Point(Double.parseDouble(str[1]), Double.parseDouble(str[2]));
+                int strSize = str.length;
+                double[] arrPoint = new double[strSize - 1];
+                for (int j = 0;j<strSize - 1;j++) {
+                    arrPoint[j] = Double.parseDouble(str[j + 1]);
+                }
+                this.origin = new Vector(arrPoint,strSize - 1);
             } else  if (str[0].compareTo("Direction") == 0) {
                 this.direction = Double.parseDouble(str[1]);
             } else if (str[0].compareTo("Size") == 0) {

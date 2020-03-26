@@ -1,11 +1,14 @@
+import LinearMath.Vector;
 import javafx.util.Pair;
+import sun.security.provider.certpath.Vertex;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
 public class Scene {
-    private List<Point> vertexList;
+    private List<Vector> vertexList;
     private List<Edge> edgesList;
 
     public Scene() throws Exception{
@@ -14,7 +17,7 @@ public class Scene {
         initializeLists("Resources\\ex0.scn");
     }
     public void initializeLists(String filePath) throws Exception{
-        List<Pair<Integer,Integer>> pointsIndex = new ArrayList<>();
+        List<Vector> pointsIndex = new ArrayList<>();
         int lineNumber = 0, edgesNum, vertexNum = 0, i;
         File file = new File(filePath);
         BufferedReader br = new BufferedReader(new FileReader(file));
@@ -30,7 +33,7 @@ public class Scene {
                 lineNumber++;
                 for (i = 0; i < edgesNum; i++) {
                     String[] edges = line.split(" ");
-                    pointsIndex.add(new Pair<Integer, Integer>(Integer.parseInt(edges[0]), Integer.parseInt(edges[1])));
+                    edgesList.add(new Edge(Integer.parseInt(edges[0]),Integer.parseInt(edges[1])));
                     line = br.readLine();
                     lineNumber++;
                 }
@@ -38,8 +41,14 @@ public class Scene {
             }
             for (i = 0; i < vertexNum; i++) {
                 String[] point = line.split(" ");
-                Point pt = new Point(Double.parseDouble(point[0]), Double.parseDouble(point[1]));
-                this.vertexList.add(pt);
+                double[] arrPoint = new double[point.length + 1];
+                for (int j = 0;j<point.length;j++) {
+                    arrPoint[j] = Double.parseDouble(point[j]);
+                }
+                arrPoint[point.length] = 1;
+                Vector vertex = new Vector(arrPoint,arrPoint.length);
+                //Point pt = new Point(Double.parseDouble(point[0]), Double.parseDouble(point[1]));
+                this.vertexList.add(vertex);
                 if (i + 1 == vertexNum) {
                     continue;
                 }
@@ -48,10 +57,10 @@ public class Scene {
             }
             lineNumber++;
         }
-        createEdgesList(pointsIndex);
+        //createEdgesList(pointsIndex);
     }
 
-    public void createEdgesList(List<Pair<Integer,Integer>> pointsIndex) {
+    /*public void createEdgesList(List<Pair<Integer,Integer>> pointsIndex) {
         ListIterator<Pair<Integer,Integer>> iterator = pointsIndex.listIterator();
         while (iterator.hasNext()) {
             Pair<Integer, Integer> pair = iterator.next();
@@ -59,7 +68,7 @@ public class Scene {
                     this.vertexList.get(pair.getValue()));
             this.edgesList.add(edge);
         }
-    }
+    }*/
 }
 
 
