@@ -11,7 +11,7 @@ public class Scene {
     public Scene() throws Exception{
         this.edgesList = new ArrayList<>();
         this.vertexList = new ArrayList<>();
-        initializeLists("C:\\Users\\shaia\\IdeaProjects\\ComputerGraphicsEx1\\Resources\\ex0.scn");
+        initializeLists("Resources\\ex0.scn");
     }
     public void initializeLists(String filePath) throws Exception{
         List<Pair<Integer,Integer>> pointsIndex = new ArrayList<>();

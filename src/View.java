@@ -10,7 +10,7 @@ public class View {
     public View() throws Exception {
         this.size = new double[2];
         this.resolution = new int[2];
-        this.getValuesFromFile("C:\\Users\\shaia\\IdeaProjects\\ComputerGraphicsEx1\\Resources\\ex0.vim");
+        this.getValuesFromFile("Resources\\ex0.vim");
 
     }
     public void getValuesFromFile(String filePath) throws Exception {
