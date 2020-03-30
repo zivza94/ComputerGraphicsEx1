@@ -4,10 +4,14 @@ import LinearMath.Vector;
 
 public class Tests {
     public static void main(String[] args) throws Exception{
-        TestVertexTransform();
-        /*double [][] arr= {{1},{1,2,3,4},{2,3,4,5}};
-        System.out.println(arr.length);
-        System.out.println(arr[0].length);*/
+        double[] vec = {2,3,4};
+        double[] vecX = {1,0,0};
+        Vector v = new Vector(vec,3);
+        Vector x = new Vector(vecX,3);
+        double angle1 = v.GetAngle();
+        double angle2 = v.GetAngle(x);
+        System.out.println("1 vec :" + angle1 + "   2 vec :" +angle2);
+
 
     }
     public static double[][] UpdateVertex(double[][] vertex, Matrix VM){

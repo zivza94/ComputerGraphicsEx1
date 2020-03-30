@@ -13,9 +13,9 @@ public class Transformation2D {
     }
     public Matrix rotate(double angle) {
         //radians??
-        //check
-        double cos = Math.cos(angle);
-        double sin = Math.sin(angle);
+        double radians = Math.toRadians(angle);
+        double cos = Math.cos(radians);
+        double sin = Math.sin(radians);
         double[][] array = {{cos, sin , 0} , {-sin, cos, 0} , {0, 0 ,1} };
         Matrix matrix = new Matrix(array, array.length);
         return matrix;

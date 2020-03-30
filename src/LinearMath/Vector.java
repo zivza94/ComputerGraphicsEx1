@@ -33,7 +33,7 @@ public class Vector {
         return retval;
     }
     public double GetLength(){
-        double length = 0;
+        double length;
         Vector v1 = this.DecreaseDimension();
         length = Math.sqrt(v1.Multiply(v1));
         return length;
@@ -41,7 +41,24 @@ public class Vector {
     public double GetAngle(Vector v){
         double CrossPro = this.Multiply(v);
         double cosAngle = CrossPro/(this.GetLength()*v.GetLength());
-        return Math.toDegrees(Math.acos(cosAngle));
+        double angle = Math.toDegrees(Math.acos(cosAngle));
+        //System.out.println(angle);
+        /*if(vec[1]< 0){
+            angle =360 - angle;
+        }*/
+        //System.out.println(angle);
+        return angle;
+    }
+    public double GetAngle() {
+        double r = this.GetLength();
+        double div = vec[1]/r;
+        double angle =Math.toDegrees(Math.acos(div));
+        //System.out.println(angle);
+        if(vec[1]< 0){
+            angle =360 - angle;
+        }
+        System.out.println("r: " + r + " , y: "+ vec[1] + ", angle: " + angle);
+        return angle;
     }
 
     public void Print(){

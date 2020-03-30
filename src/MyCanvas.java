@@ -1,6 +1,8 @@
 import LinearMath.Matrix;
 import LinearMath.Transformation2D;
 import LinearMath.Vector;
+
+import javax.print.attribute.standard.Destination;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
@@ -29,6 +31,8 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         this.viewWidth = width;
         this.AT = new Matrix(3);
         AT.toIdentityMatrix();
+        this.CT = new Matrix(3);
+        CT.toIdentityMatrix();
         this.TT = new Matrix(3);
         firstPaint = true;
         TT.toIdentityMatrix();
@@ -58,6 +62,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         Matrix t2 = transformation.translate((double) this.viewWidth / 2 + 20,
                 (double) this.viewHeight / 2 + 20);
         this.VM = t2.Multiply(scale).Multiply(rotate).Multiply(t1);
+        this.TT = CT.Multiply(AT.Multiply(VM));
     }
 
     public void draw(List<Edge> edges, List<Vector> vertex) {
@@ -142,15 +147,20 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
             Matrix transCenter = transformation.translate(originX, originY);
             Matrix transBack = transformation.translate(-originX, -originY);
             Vector destination = new Vector(new double[]{e.getX(),e.getY(), 1}, 3);
+
             if (transType.equals(("Scale"))) {
+
                 double SF = destination.minus(view.getOrigin()).GetLength() /
                         pressedPoint.minus(view.getOrigin()).GetLength();
                 Matrix scale = transformation.scale(SF, SF);
                 CT = transCenter.Multiply(scale).Multiply(transBack);
             } else {
-
-                Matrix rotate = transformation.rotate(destination.minus(view.getOrigin()).GetAngle
-                        (pressedPoint.minus(view.getOrigin())));
+                double angle1 = destination.minus(view.getOrigin()).GetAngle();
+                double angle2 = pressedPoint.minus(view.getOrigin()).GetAngle();
+                System.out.println("rotate angle = " + (angle1 - angle2));
+                //System.out.println("S-C.angle = " + angle2);
+                Matrix rotate = transformation.rotate(angle1-angle2);
+                //Matrix rotate = transformation.rotate(destination.GetAngle(pressedPoint));
                 CT = transCenter.Multiply(rotate).Multiply(transBack);
             }
         }
