@@ -42,22 +42,21 @@ public class Vector {
         double CrossPro = this.Multiply(v);
         double cosAngle = CrossPro/(this.GetLength()*v.GetLength());
         double angle = Math.toDegrees(Math.acos(cosAngle));
-        //System.out.println(angle);
-        /*if(vec[1]< 0){
-            angle =360 - angle;
-        }*/
-        //System.out.println(angle);
         return angle;
     }
     public double GetAngle() {
         double r = this.GetLength();
         double div = vec[1]/r;
-        double angle =Math.toDegrees(Math.acos(div));
-        //System.out.println(angle);
-        if(vec[1]< 0){
-            angle =360 - angle;
+        double angle =Math.toDegrees(Math.asin(div));
+        if(vec[1]< 0 && vec[0] < 0){
+            angle =-(180 + angle);
         }
-        System.out.println("r: " + r + " , y: "+ vec[1] + ", angle: " + angle);
+        else if(vec[0] <0){
+            angle =180 - angle;
+        }
+        if(angle<0){
+            angle+=360;
+        }
         return angle;
     }
 

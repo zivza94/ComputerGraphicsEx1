@@ -4,8 +4,8 @@ import LinearMath.Vector;
 
 public class Tests {
     public static void main(String[] args) throws Exception{
-        double[] vec = {2,3,4};
-        double[] vecX = {1,0,0};
+        double[] vec = {0,3,1};
+        double[] vecX = {3,3,0};
         Vector v = new Vector(vec,3);
         Vector x = new Vector(vecX,3);
         double angle1 = v.GetAngle();

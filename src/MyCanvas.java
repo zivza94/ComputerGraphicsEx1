@@ -144,23 +144,22 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         } else {
             double originX = view.getOrigin().getVec()[0];
             double originY = view.getOrigin().getVec()[1];
-            Matrix transCenter = transformation.translate(originX, originY);
-            Matrix transBack = transformation.translate(-originX, -originY);
+            double arr[] = {viewWidth/2,viewHeight/2,1};
+            Vector center = new Vector(arr, 3);
+            Matrix transCenter = transformation.translate(viewWidth/2, viewHeight/2);
+            Matrix transBack = transformation.translate(-viewWidth/2, -viewHeight/2);
             Vector destination = new Vector(new double[]{e.getX(),e.getY(), 1}, 3);
 
             if (transType.equals(("Scale"))) {
 
-                double SF = destination.minus(view.getOrigin()).GetLength() /
-                        pressedPoint.minus(view.getOrigin()).GetLength();
+                double SF = destination.minus(center).GetLength() /
+                        pressedPoint.minus(center).GetLength();
                 Matrix scale = transformation.scale(SF, SF);
                 CT = transCenter.Multiply(scale).Multiply(transBack);
             } else {
-                double angle1 = destination.minus(view.getOrigin()).GetAngle();
-                double angle2 = pressedPoint.minus(view.getOrigin()).GetAngle();
-                System.out.println("rotate angle = " + (angle1 - angle2));
-                //System.out.println("S-C.angle = " + angle2);
-                Matrix rotate = transformation.rotate(angle1-angle2);
-                //Matrix rotate = transformation.rotate(destination.GetAngle(pressedPoint));
+                double angle1 = destination.minus(center).GetAngle();
+                double angle2 = pressedPoint.minus(center).GetAngle();
+                Matrix rotate = transformation.rotate(-(angle1-angle2));
                 CT = transCenter.Multiply(rotate).Multiply(transBack);
             }
         }
