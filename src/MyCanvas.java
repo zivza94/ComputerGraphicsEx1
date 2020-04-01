@@ -1,8 +1,6 @@
 import LinearMath.Matrix;
 import LinearMath.Transformation2D;
 import LinearMath.Vector;
-
-import javax.print.attribute.standard.Destination;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
@@ -12,7 +10,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     private static final long serialVersionUID = 1L;
     private int viewHeight;
     private int viewWidth;
-    private Boolean cllipingFlag;
+    private Boolean clipingFlag;
     private Scene scene;
     private View view;
     private Transformation2D transformation;
@@ -23,27 +21,36 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     private Matrix CT;
     private Matrix TT;
     private boolean firstPaint;
-    public MyCanvas(int width, int height) throws Exception{
+    public MyCanvas(int width, int height, View view) throws Exception{
         this.scene = new Scene();
-        this.view = new View();
+        this.view = view;
         this.transformation = new Transformation2D();
         this.viewHeight = height;
         this.viewWidth = width;
+        firstPaint = true;
+        clipingFlag = false;
+        InitializeMatrices();
+        addMouseListener(this);
+        addMouseMotionListener(this);
+        addKeyListener(this);
+    }
+
+    public void InitializeMatrices() {
         this.AT = new Matrix(3);
         AT.toIdentityMatrix();
         this.CT = new Matrix(3);
         CT.toIdentityMatrix();
         this.TT = new Matrix(3);
-        firstPaint = true;
         TT.toIdentityMatrix();
-        addMouseListener(this);
-        addMouseMotionListener(this);
-        addKeyListener(this);
-        cllipingFlag = false;
-
     }
 
+    @Override
+    public void setSize (Dimension dim) {
+        viewHeight = dim.height;
+        viewWidth = dim.width;
+    }
     public void paint(Graphics g) {
+        drawBackground(g);
         setSize(this.viewWidth, this.viewHeight);
         worldView();
         if(firstPaint) {
@@ -52,7 +59,14 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         } else {
             this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.TT));
         }
+    }
 
+    private void drawBackground(Graphics g) {
+        g.setFont(new Font("Forte", Font.BOLD, 20));
+        g.setColor(Color.red);
+        g.drawString("C - Toggle Clip on/off.", 20, 20);
+        g.drawString("R - Resets To Original Position.", 20, 40);
+        g.drawString("Q - Quit.", 20, 60);
     }
 
     public void worldView() {
@@ -66,15 +80,17 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     }
 
     public void draw(List<Edge> edges, List<Vector> vertex) {
+        Graphics g = getGraphics();
         int edgesNum = edges.size();
         int i;
         for (i = 0; i < edgesNum; i++) {
             Vector ver0 = vertex.get(edges.get(i).getpointIndex0());
             Vector ver1 = vertex.get(edges.get(i).getpointIndex1());
-            if (cllipingFlag) {
-                //clliping
+            if (clipingFlag) {
+
+                //cliping
             }
-            getGraphics().drawLine((int) ver0.getVec()[0], (int) ver0.getVec()[1],
+            g.drawLine((int) ver0.getVec()[0], (int) ver0.getVec()[1],
                     (int) ver1.getVec()[0], (int) ver1.getVec()[1]);
         }
 
@@ -142,8 +158,6 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
 
 
         } else {
-            double originX = view.getOrigin().getVec()[0];
-            double originY = view.getOrigin().getVec()[1];
             double arr[] = {viewWidth/2,viewHeight/2,1};
             Vector center = new Vector(arr, 3);
             Matrix transCenter = transformation.translate(viewWidth/2, viewHeight/2);
@@ -164,7 +178,6 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
             }
         }
         TT = CT.Multiply(AT).Multiply(VM);
-
         this.repaint();
     }
 
@@ -191,12 +204,19 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyChar() == 'c' || e.getKeyChar() == 'C') {
-            cllipingFlag = !cllipingFlag;
+            clipingFlag = !clipingFlag;
+        } else if (e.getKeyChar() == 'r' || e.getKeyChar() == 'R') {
+            firstPaint = true;
+        } else if (e.getKeyChar() == 'q' || e.getKeyChar() == 'Q') {
+            System.exit(0);
         }
+        this.repaint();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
 
     }
+
+
 }
