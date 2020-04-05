@@ -13,6 +13,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     private Boolean clipingFlag;
     private Scene scene;
     private View view;
+    private Clipping clipping;
     private Transformation2D transformation;
     private String transType;
     private Vector pressedPoint;
@@ -30,6 +31,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         firstPaint = true;
         clipingFlag = false;
         InitializeMatrices();
+        createClipping();
         addMouseListener(this);
         addMouseMotionListener(this);
         addKeyListener(this);
@@ -42,6 +44,32 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         CT.toIdentityMatrix();
         this.TT = new Matrix(3);
         TT.toIdentityMatrix();
+    }
+
+    public void createClipping() {
+        List<Edge> boundaryEdgesList = new ArrayList<>();
+        List<Vector> cVertexList = new ArrayList<>();
+        double[] upperLeft = {50, 50};
+        Vector p0 = new Vector(upperLeft,2);
+        cVertexList.add(p0);
+        double[] upperRight = {300,50};
+        Vector p1 = new Vector(upperRight,2);
+        cVertexList.add(p1);
+        double[] downLeft = {50, 300};
+        Vector p2 = new Vector(downLeft,2);
+        cVertexList.add(p2);
+        double[] downRight = {300,300};
+        Vector p3 = new Vector(downRight,2);
+        cVertexList.add(p3);
+        Edge edge0 = new Edge(0,1);
+        boundaryEdgesList.add(edge0);
+        Edge edge1 = new Edge(0,2);
+        boundaryEdgesList.add(edge1);
+        Edge edge2 = new Edge(1,3);
+        boundaryEdgesList.add(edge2);
+        Edge edge3 = new Edge(2,3);
+        boundaryEdgesList.add(edge3);
+        this.clipping = new Clipping(boundaryEdgesList, cVertexList);
     }
 
     @Override
@@ -59,6 +87,37 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         } else {
             this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.TT));
         }
+        /**List<Edge> boundaryEdgesList = new ArrayList<>();
+        List<Vector> cVertexList = new ArrayList<>();
+        double[] upperLeft = {50, 50};
+        Vector p0 = new Vector(upperLeft,2);
+        cVertexList.add(p0);
+        double[] upperRight = {300,50};
+        Vector p1 = new Vector(upperRight,2);
+        cVertexList.add(p1);
+        double[] downLeft = {50, 300};
+        Vector p2 = new Vector(downLeft,2);
+        cVertexList.add(p2);
+        double[] downRight = {300,300};
+        Vector p3 = new Vector(downRight,2);
+        cVertexList.add(p3);
+        Edge edge0 = new Edge(0,1);
+        boundaryEdgesList.add(edge0);
+        Edge edge1 = new Edge(0,2);
+        boundaryEdgesList.add(edge1);
+        Edge edge2 = new Edge(1,3);
+        boundaryEdgesList.add(edge2);
+        Edge edge3 = new Edge(2,3);
+        boundaryEdgesList.add(edge3);
+        this.getGraphics().drawLine((int) upperLeft[0], (int) upperLeft[1],
+                (int) upperLeft[0], (int) upperRight[1]);
+        this.getGraphics().drawLine((int) downRight[0], (int) downRight[1],
+                (int) upperRight[0], (int) upperRight[1]);
+        this.getGraphics().drawLine((int) upperLeft[0], (int) upperLeft[1],
+                (int) downLeft[0], (int) downLeft[1]);
+        this.getGraphics().drawLine((int) downLeft[0], (int) downLeft[1],
+                (int) downRight[0], (int) downRight[1]);*/
+
     }
 
     private void drawBackground(Graphics g) {
@@ -87,11 +146,20 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
             Vector ver0 = vertex.get(edges.get(i).getpointIndex0());
             Vector ver1 = vertex.get(edges.get(i).getpointIndex1());
             if (clipingFlag) {
+                List<Vector> line = new ArrayList<>();
+                line.add(ver0.DecreaseDimension());
+                line.add(ver1.DecreaseDimension());
+                line = clipping.clip(line);
+                if (!(line.get(0).getVec()[0] == -1 && line.get(0).getVec()[1] == -1 &&
+                        line.get(1).getVec()[0] == -1 && line.get(1).getVec()[1] == -1)) {
+                    g.drawLine((int) line.get(0).getVec()[0], (int) line.get(0).getVec()[1],
+                            (int) line.get(1).getVec()[0], (int)line.get(1).getVec()[1]);
+                }
 
-                //cliping
+            } else {
+                g.drawLine((int) ver0.getVec()[0], (int) ver0.getVec()[1],
+                        (int) ver1.getVec()[0], (int) ver1.getVec()[1]);
             }
-            g.drawLine((int) ver0.getVec()[0], (int) ver0.getVec()[1],
-                    (int) ver1.getVec()[0], (int) ver1.getVec()[1]);
         }
 
     }
