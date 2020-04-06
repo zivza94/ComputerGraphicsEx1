@@ -49,25 +49,25 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     public void createClipping() {
         List<Edge> boundaryEdgesList = new ArrayList<>();
         List<Vector> cVertexList = new ArrayList<>();
-        double[] upperLeft = {50, 50};
-        Vector p0 = new Vector(upperLeft,2);
+        double[] upperLeft = {50, 50,1};
+        Vector p0 = new Vector(upperLeft,3);
         cVertexList.add(p0);
-        double[] upperRight = {300,50};
-        Vector p1 = new Vector(upperRight,2);
+        double[] upperRight = {300,50,1};
+        Vector p1 = new Vector(upperRight,3);
         cVertexList.add(p1);
-        double[] downLeft = {50, 300};
-        Vector p2 = new Vector(downLeft,2);
+        double[] downLeft = {300, 300,1};
+        Vector p2 = new Vector(downLeft,3);
         cVertexList.add(p2);
-        double[] downRight = {300,300};
-        Vector p3 = new Vector(downRight,2);
+        double[] downRight = {50,300,1};
+        Vector p3 = new Vector(downRight,3);
         cVertexList.add(p3);
         Edge edge0 = new Edge(0,1);
         boundaryEdgesList.add(edge0);
-        Edge edge1 = new Edge(0,2);
+        Edge edge1 = new Edge(1,2);
         boundaryEdgesList.add(edge1);
-        Edge edge2 = new Edge(1,3);
+        Edge edge2 = new Edge(2,3);
         boundaryEdgesList.add(edge2);
-        Edge edge3 = new Edge(2,3);
+        Edge edge3 = new Edge(3,0);
         boundaryEdgesList.add(edge3);
         this.clipping = new Clipping(boundaryEdgesList, cVertexList);
     }
@@ -142,16 +142,16 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         Graphics g = getGraphics();
         int edgesNum = edges.size();
         int i;
+        g.drawRect(50,50,250,250);
         for (i = 0; i < edgesNum; i++) {
             Vector ver0 = vertex.get(edges.get(i).getpointIndex0());
             Vector ver1 = vertex.get(edges.get(i).getpointIndex1());
             if (clipingFlag) {
                 List<Vector> line = new ArrayList<>();
-                line.add(ver0.DecreaseDimension());
-                line.add(ver1.DecreaseDimension());
+                    line.add(ver0);
+                    line.add(ver1);
                 line = clipping.clip(line);
-                if (!(line.get(0).getVec()[0] == -1 && line.get(0).getVec()[1] == -1 &&
-                        line.get(1).getVec()[0] == -1 && line.get(1).getVec()[1] == -1)) {
+                if (line != null) {
                     g.drawLine((int) line.get(0).getVec()[0], (int) line.get(0).getVec()[1],
                             (int) line.get(1).getVec()[0], (int)line.get(1).getVec()[1]);
                 }
