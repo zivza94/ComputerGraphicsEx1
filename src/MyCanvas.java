@@ -49,17 +49,18 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
     public void createClipping() {
         List<Edge> boundaryEdgesList = new ArrayList<>();
         List<Vector> cVertexList = new ArrayList<>();
-        double[] upperLeft = {50, 50,1};
+        double[] upperLeft = {20, 20,1};
         Vector p0 = new Vector(upperLeft,3);
         cVertexList.add(p0);
-        double[] upperRight = {300,50,1};
+        double[] upperRight = {viewWidth - 40,20,1};
         Vector p1 = new Vector(upperRight,3);
         cVertexList.add(p1);
-        double[] downLeft = {300, 300,1};
-        Vector p2 = new Vector(downLeft,3);
+        double[] downRight = {viewWidth - 40,viewHeight - 60,1};
+        Vector p2 = new Vector(downRight,3);
         cVertexList.add(p2);
-        double[] downRight = {50,300,1};
-        Vector p3 = new Vector(downRight,3);
+        double[] downLeft = {20, viewHeight - 60,1};
+        Vector p3 = new Vector(downLeft,3);
+        cVertexList.add(p3);
         cVertexList.add(p3);
         Edge edge0 = new Edge(0,1);
         boundaryEdgesList.add(edge0);
@@ -87,37 +88,6 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         } else {
             this.draw(this.scene.getEdgesList(), this.UpdateVertex(this.scene.getVertexList(), this.TT));
         }
-        /**List<Edge> boundaryEdgesList = new ArrayList<>();
-        List<Vector> cVertexList = new ArrayList<>();
-        double[] upperLeft = {50, 50};
-        Vector p0 = new Vector(upperLeft,2);
-        cVertexList.add(p0);
-        double[] upperRight = {300,50};
-        Vector p1 = new Vector(upperRight,2);
-        cVertexList.add(p1);
-        double[] downLeft = {50, 300};
-        Vector p2 = new Vector(downLeft,2);
-        cVertexList.add(p2);
-        double[] downRight = {300,300};
-        Vector p3 = new Vector(downRight,2);
-        cVertexList.add(p3);
-        Edge edge0 = new Edge(0,1);
-        boundaryEdgesList.add(edge0);
-        Edge edge1 = new Edge(0,2);
-        boundaryEdgesList.add(edge1);
-        Edge edge2 = new Edge(1,3);
-        boundaryEdgesList.add(edge2);
-        Edge edge3 = new Edge(2,3);
-        boundaryEdgesList.add(edge3);
-        this.getGraphics().drawLine((int) upperLeft[0], (int) upperLeft[1],
-                (int) upperLeft[0], (int) upperRight[1]);
-        this.getGraphics().drawLine((int) downRight[0], (int) downRight[1],
-                (int) upperRight[0], (int) upperRight[1]);
-        this.getGraphics().drawLine((int) upperLeft[0], (int) upperLeft[1],
-                (int) downLeft[0], (int) downLeft[1]);
-        this.getGraphics().drawLine((int) downLeft[0], (int) downLeft[1],
-                (int) downRight[0], (int) downRight[1]);*/
-
     }
 
     private void drawBackground(Graphics g) {
@@ -142,7 +112,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         Graphics g = getGraphics();
         int edgesNum = edges.size();
         int i;
-        g.drawRect(50,50,250,250);
+        g.drawRect(20,20,viewWidth - 60,viewHeight - 80);
         for (i = 0; i < edgesNum; i++) {
             Vector ver0 = vertex.get(edges.get(i).getpointIndex0());
             Vector ver1 = vertex.get(edges.get(i).getpointIndex1());
@@ -275,6 +245,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
             clipingFlag = !clipingFlag;
         } else if (e.getKeyChar() == 'r' || e.getKeyChar() == 'R') {
             firstPaint = true;
+            InitializeMatrices();
         } else if (e.getKeyChar() == 'q' || e.getKeyChar() == 'Q') {
             System.exit(0);
         }

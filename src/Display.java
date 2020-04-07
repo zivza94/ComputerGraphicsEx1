@@ -22,10 +22,10 @@ public class Display {
         myFrame = new MyFrame(title);
         myFrame.setVisible(true);
         myFrame.addClosingEvent();
-        myCanvas = new MyCanvas(width - 40,height - 40, view);
+        myCanvas = new MyCanvas(width,height, view);
         myFrame.add(myCanvas);
         myFrame.setSize(width,height);
-        //myFrame.pack();
+        myFrame.pack();
         myFrame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
