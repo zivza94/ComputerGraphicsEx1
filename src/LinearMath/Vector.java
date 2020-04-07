@@ -67,7 +67,7 @@ public class Vector {
         System.out.println();
     }
 
-    public Vector AddDimension(){
+    private Vector AddDimension(){
         double[] vecArr = new double[size+1];
         for(int i=0; i<size; i++){
             vecArr[i] = this.vec[i];
@@ -76,7 +76,7 @@ public class Vector {
         Vector newVec = new Vector(vecArr,size+1);
         return newVec;
     }
-    public Vector DecreaseDimension(){
+    private Vector DecreaseDimension(){
         double[] vecArr = new double[size-1];
         for(int i=0; i<size - 1; i++){
             vecArr[i] = this.vec[i];

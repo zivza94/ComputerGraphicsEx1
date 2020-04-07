@@ -14,7 +14,7 @@ public class Tests {
 
 
     }
-    public static double[][] UpdateVertex(double[][] vertex, Matrix VM){
+    /*public static double[][] UpdateVertex(double[][] vertex, Matrix VM){
         int dim = vertex.length;
         int size = vertex[0].length;
         double[][] retval = new double[dim][size];
@@ -33,8 +33,8 @@ public class Tests {
             }
         }
         return retval;
-    }
-    public static void TestVertexTransform() throws Exception{
+    }*/
+    /*public static void TestVertexTransform() throws Exception{
         double[][] ver = {{2,4,2,4},{4,4,2,2}};
         Transformation2D tr = new Transformation2D();
         Matrix translate = tr.translate(4,2);
@@ -55,5 +55,5 @@ public class Tests {
         v2 = v2.DecreaseDimension();
         v2.Print();
 
-    }
+    }*/
 }
