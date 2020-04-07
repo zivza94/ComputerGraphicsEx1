@@ -58,7 +58,7 @@ class MyCanvas extends Canvas implements MouseListener,  MouseMotionListener, Ke
         double[] downRight = {viewWidth - 40,viewHeight - 60,1};
         Vector p2 = new Vector(downRight,3);
         cVertexList.add(p2);
-        double[] downLeft = {20, viewHeight - 60,1};
+        double[] downLeft = {20,viewHeight - 60,1};
         Vector p3 = new Vector(downLeft,3);
         cVertexList.add(p3);
         cVertexList.add(p3);
